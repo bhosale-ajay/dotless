@@ -12,7 +12,8 @@ const config = {
     libraryTarget: "umd",
     umdNamedDefine: true,
     filename: "[name].js",
-    path: resolve(__dirname, "dist")
+    path: resolve(__dirname, "dist"),
+    globalObject: "typeof self !== \'undefined\' ? self : this",
   },
   resolve: {
     extensions: [".ts", ".js"]
