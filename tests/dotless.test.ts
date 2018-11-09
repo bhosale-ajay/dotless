@@ -121,6 +121,24 @@ test("first with condition", () => {
     expect(actual).toEqual(expected);
 });
 
+test("first with state", () => {
+    const seenBefore = () => {
+        const seen: any = {};
+        return (n: number) => {
+            if (seen[n]) {
+                return true;
+            } else {
+                seen[n] = true;
+                return false;
+            }
+        };
+    };
+    const firstDuplicate = first<number>(seenBefore());
+    const actual = firstDuplicate([1, 2, 4, 2, 5, 4]);
+    const expected = 2;
+    expect(actual).toEqual(expected);
+});
+
 test("first with condition and no matching returns null", () => {
     const dividedByFive = first<number>(n => n % 5 === 0);
     const actual = dividedByFive([1, 2, 3, 4]);

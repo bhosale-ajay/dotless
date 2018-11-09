@@ -7,7 +7,7 @@ test("query 01", () => {
         range(1, 10),
         filter(n => n % 3 === 0),
         map(n => n * 2),
-        toArray
+        reduce((acc, n) => acc + n, 0)
     );
     const expected = [6, 12, 18];
     expect(actual).toEqual(expected);

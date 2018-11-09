@@ -14,12 +14,27 @@ test("findPairs pairs which are mutually exclusive", () => {
 
 test("findPairs duplicate", () => {
     const source = [2, 6, 4, 6, 1, 8, 2, 1];
-    const itemsWithTheirDoubles = findPairs((a, b) => a === b);
-    const actual = itemsWithTheirDoubles(source);
+    const duplicateItems = findPairs((a, b) => a === b);
+    const actual = duplicateItems(source);
     const expected = [
         [2, 2, 0, 6],
         [6, 6, 1, 3],
         [1, 1, 4, 7]
+    ];
+    expect(toArray(actual)).toEqual(expected);
+});
+
+test("findPairs duplicate ME", () => {
+    const source = [2, 6, 4, 6, 1, 8, 2, 1];
+    const duplicateItemsME = findPairs((a, b) => a === b, true);
+    const actual = duplicateItemsME(source);
+    const expected = [
+        [2, 2, 0, 6],
+        [6, 6, 1, 3],
+        [6, 6, 3, 1],
+        [1, 1, 4, 7],
+        [2, 2, 6, 0],
+        [1, 1, 7, 4]
     ];
     expect(toArray(actual)).toEqual(expected);
 });
