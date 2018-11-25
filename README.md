@@ -6,6 +6,15 @@ Its an experimental library providing functions required to write functional sty
 
 All the functions are independent to each other and not defined as part of one single class. They can be composed along with other functions.
 
+## Installation
+```
+npm i dotless --save
+
+or
+
+yarn add dotless
+```
+
 ## Example
 ```JavaScript
 const items = query(
