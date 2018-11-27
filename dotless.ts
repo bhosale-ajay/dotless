@@ -26,6 +26,16 @@ export function mapMany<TSource, TResult>(convertor: (item: TSource) => Iterable
     };
 }
 
+export function mapWithLast<TSource, TResult>(convertor: (last: TResult, item: TSource) => TResult, seed: TResult) {
+    return function*(source: Iterable<TSource>) {
+        let last = seed;
+        for (const item of source) {
+            last = convertor(last, item);
+            yield last;
+        }
+    };
+}
+
 export function filter<TSource>(predicate: (item: TSource) => boolean) {
     return function*(source: Iterable<TSource>) {
         for (const item of source) {

@@ -1,6 +1,7 @@
 export declare function range(from: number, to: number, step?: number): IterableIterator<number>;
 export declare function map<TSource, TResult>(convertor: (item: TSource) => TResult): (source: Iterable<TSource>) => IterableIterator<TResult>;
 export declare function mapMany<TSource, TResult>(convertor: (item: TSource) => IterableIterator<TResult>): (source: Iterable<TSource>) => IterableIterator<TResult>;
+export declare function mapWithLast<TSource, TResult>(convertor: (last: TResult, item: TSource) => TResult, seed: TResult): (source: Iterable<TSource>) => IterableIterator<TResult>;
 export declare function filter<TSource>(predicate: (item: TSource) => boolean): (source: Iterable<TSource>) => IterableIterator<TSource>;
 export declare function reduce<TSource, TResult>(callback: (accumulator: TResult, item: TSource, index: number) => TResult, initialValue: TResult): (source: Iterable<TSource>) => TResult;
 export declare function any<TSource>(predicate?: (item: TSource) => boolean): (source: Iterable<TSource>) => boolean;

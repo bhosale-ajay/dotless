@@ -178,6 +178,19 @@ console.log(items);
    // returns [0, 1, 2, 0, 1, 2, 3];
    expand([2, 3]);
    ```
+9. mapWithLast
+   ```JavaScript
+   // Combines reduce and map
+   // instead of returning a single accumulator returns iterator of accumulator
+   const location = { distance : 0, hops : 0};
+   const strides = [1, 4, 2];
+   const run = mapWithLast(({distance, hops}, stride: number) => ({
+       distance: distance + stride,
+       hops: hops + 1
+   }), location);
+   // returns [{distance: 1, hops: 1}, {distance: 5, hops: 2}, {distance: 7, hops: 3}]
+   run(strides);
+   ```
 9. matchesToArray
    ```JavaScript
    // Applies regex to string and maps matches to array

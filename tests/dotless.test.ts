@@ -1,4 +1,4 @@
-import { any, countBy, filter, first, groupBy, map, mapMany, matchesToArray, reduce, take, toArray } from "../dotless";
+import { any, countBy, filter, first, groupBy, map, mapMany, mapWithLast, matchesToArray, reduce, take, toArray } from "../dotless";
 
 test("map", () => {
     const doubleIt = map<number, number>(n => n * 2);
@@ -17,6 +17,18 @@ test("mapMany", () => {
     const source = [2, 3];
     const actual = expand(source);
     const expected = [0, 1, 2, 0, 1, 2, 3];
+    expect(toArray(actual)).toEqual(expected);
+});
+
+test("mapWithLast", () => {
+    const location = {distance: 0, hops: 0};
+    const strides = [1, 4, 2];
+    const run = mapWithLast(({distance, hops}, stride: number) => ({
+        distance: distance + stride,
+        hops: hops + 1
+    }), location);
+    const actual = run(strides);
+    const expected = [{distance: 1, hops: 1}, {distance: 5, hops: 2}, {distance: 7, hops: 3}];
     expect(toArray(actual)).toEqual(expected);
 });
 

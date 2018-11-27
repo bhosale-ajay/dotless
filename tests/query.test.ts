@@ -9,7 +9,7 @@ test("query 01", () => {
         map(n => n * 2),
         reduce((acc, n) => acc + n, 0)
     );
-    const expected = [6, 12, 18];
+    const expected = 36;
     expect(actual).toEqual(expected);
 });
 
