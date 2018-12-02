@@ -7,7 +7,7 @@ export declare function reduce<TSource, TResult>(callback: (accumulator: TResult
 export declare function any<TSource>(predicate?: (item: TSource) => boolean): (source: Iterable<TSource>) => boolean;
 export declare function first<TSource>(predicate?: (item: TSource) => boolean): (source: Iterable<TSource>) => TSource | null;
 export declare function take<TSource>(n: number): (source: Iterable<TSource>) => IterableIterator<TSource>;
-export declare function findPairs<TSource>(comparer: (a: TSource, b: TSource) => boolean, mutuallyExclusive?: boolean): (source: TSource[]) => IterableIterator<(number | TSource)[]>;
+export declare function findPairs<TSource>(comparer: (a: TSource, b: TSource) => boolean, mutuallyExclusive?: boolean): (source: TSource[]) => Iterable<[TSource, TSource, number, number]>;
 export declare const toArray: {
     <T>(arrayLike: ArrayLike<T>): T[];
     <T, U>(arrayLike: ArrayLike<T>, mapfn: (v: T, k: number) => U, thisArg?: any): U[];

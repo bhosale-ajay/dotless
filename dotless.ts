@@ -98,7 +98,7 @@ export function take<TSource>(n: number) {
 
 export function findPairs<TSource>(comparer: (a: TSource, b: TSource) => boolean,
                                    mutuallyExclusive = false) {
-    return function*(source: TSource[]) {
+    return function*(source: TSource[]): Iterable<[TSource, TSource, number, number]> {
         for (let thisIndex = 0; thisIndex < source.length; thisIndex++) {
             for (let thatIndex = mutuallyExclusive ? 0 : thisIndex + 1;
                      thatIndex < source.length;
