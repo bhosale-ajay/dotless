@@ -181,10 +181,10 @@ export function query(... chain: any[]) {
     return chain.reduce((a, f) => f(a));
 }
 
-export function ascendingBy(property: string | ((obj: any) => any) = _ => _) {
-    return (a: any, b: any) => {
-        const aValue = (property instanceof Function) ? property(a) : a[property];
-        const bValue = (property instanceof Function) ? property(b) : b[property];
+export function ascendingBy<T>(property: string | ((obj: T) => any) = _ => _) {
+    return (a: T, b: T) => {
+        const aValue = (property instanceof Function) ? property(a) : (a as any)[property];
+        const bValue = (property instanceof Function) ? property(b) : (b as any)[property];
         if (aValue > bValue) {
             return 1;
         } else if (aValue === bValue) {
@@ -195,10 +195,10 @@ export function ascendingBy(property: string | ((obj: any) => any) = _ => _) {
     };
 }
 
-export function descendingBy(property: string | ((obj: any) => any) = _ => _) {
-    return (a: any, b: any) => {
-        const aValue = (property instanceof Function) ? property(a) : a[property];
-        const bValue = (property instanceof Function) ? property(b) : b[property];
+export function descendingBy<T>(property: string | ((obj: T) => any) = _ => _) {
+    return (a: T, b: T) => {
+        const aValue = (property instanceof Function) ? property(a) : (a as any)[property];
+        const bValue = (property instanceof Function) ? property(b) : (b as any)[property];
         if (aValue > bValue) {
             return -1;
         } else if (aValue === bValue) {
@@ -245,10 +245,10 @@ interface Dictionary<T> {
 
 export function groupBy<TSource>(property: string | ((obj: TSource) => string)) {
     return (source: Iterable<TSource>) => {
-        const result: Dictionary<[TSource]> = {};
+        const result: Dictionary<TSource[]> = {};
         for (const item of source) {
             const key = ((property instanceof Function) ? property(item) : (item as any)[property]).toString();
-            result[key] = result[key] || [];
+            result[key] = result[key] === undefined ? [] : result[key];
             result[key].push(item);
         }
         return result;
@@ -260,7 +260,7 @@ export function countBy<TSource>(property: (string | ((obj: TSource) => string))
         const result: Dictionary<number> = {};
         for (const item of source) {
             const key = ((property instanceof Function) ? property(item) : (item as any)[property]).toString();
-            result[key] = (result[key] || 0) + 1;
+            result[key] = (result[key] === undefined ? 0 : result[key]) + 1;
         }
         return result;
     };

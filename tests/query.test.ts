@@ -89,7 +89,7 @@ test("query 08", () => {
         take(3),
         map(p => p[0]),
         toArray,
-        sort<number>(descendingBy())
+        sort(descendingBy())
     );
     const expected = [81, 49, 9];
     expect(actual).toEqual(expected);
@@ -114,6 +114,17 @@ test("query 09", () => {
         sort(ascendingBy())
     );
     const expected = [33, 63, 93];
+    expect(actual).toEqual(expected);
+});
+
+test("query 10", () => {
+    const actual = query(
+        [93, 23, 73, 43, 53, 63, 33, 83, 13],
+        sort(ascendingBy()),
+        take(2),
+        toArray
+    );
+    const expected = [13, 23];
     expect(actual).toEqual(expected);
 });
 

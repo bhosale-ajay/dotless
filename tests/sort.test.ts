@@ -20,7 +20,7 @@ test("sort with function 01", () => {
     const henry21 = { name : "Henry", age : 21 };
     const homer22 = { name : "Homer", age : 22 };
     const items = [ adi21, axe21, abe22, aro22, henry21, homer22 ];
-    const sorter = sort(descendingBy(x => x.name.length), descendingBy("age"), ascendingBy("name"));
+    const sorter = sort<{name: string, age: number}>(descendingBy(x => x.name.length), descendingBy("age"), ascendingBy("name"));
     const actual = sorter(items);
     const expected = [ homer22, henry21, abe22, aro22, adi21, axe21 ];
     expect(actual).toEqual(expected);
@@ -34,7 +34,7 @@ test("sort with function 02", () => {
     const henry22 = { name : "Henry", age : 22 };
     const homer22 = { name : "Homer", age : 22 };
     const items = [ abe22, aro22, henry22, homer22, adi21, axe21 ];
-    const sorter = sort(ascendingBy(x => x.name.length), ascendingBy("age"), descendingBy("name"));
+    const sorter = sort<{name: string, age: number}>(ascendingBy(x => x.name.length), ascendingBy("age"), descendingBy("name"));
     const actual = sorter(items);
     const expected = [ axe21, adi21, aro22, abe22, homer22, henry22];
     expect(actual).toEqual(expected);
