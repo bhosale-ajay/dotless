@@ -1,4 +1,6 @@
-import { any, countBy, filter, first, groupBy, map, mapMany, mapWithLast, matchesToArray, reduce, take, toArray } from "../dotless";
+import { any, count, countBy, cycle, each, filter,
+         first, groupBy, map, mapMany, mapWithLast,
+         matchesToArray, query, reduce, take, toArray } from "../dotless";
 
 test("map", () => {
     const doubleIt = map<number, number>(n => n * 2);
@@ -296,5 +298,38 @@ test("groupBy function", () => {
         "even" : [2, 4, 6, 8]
     };
     const actual = groupBy<number>(n => n % 2 ? "odd" : "even")(input);
+    expect(actual).toEqual(expected);
+});
+
+test("cycle", () => {
+    const input = [1, 2, 3];
+    const expected = [1, 2, 3, 1, 2, 3, 1, 2, 3, 1];
+    const actual = query(cycle(input), take(10), toArray);
+    expect(actual).toEqual(expected);
+});
+
+test("count items", () => {
+    const input = [1, 2, 3];
+    const expected = 3;
+    const actual = count()(input);
+    expect(actual).toEqual(expected);
+});
+
+test("count items matching a predicate", () => {
+    const input = [1, 2, 3];
+    const expected = 1;
+    const actual = count<number>(n => n % 2 === 0)(input);
+    expect(actual).toEqual(expected);
+});
+
+test("each", () => {
+    const input = [{ n: 1, v: false}, {n: 2, v: false}];
+    const expected = 2;
+    const actual = query(input,
+        each(p => { p.v = true; }),
+        // the iterator has to be consumed to
+        // invoke the each action
+        count(p => p.v)
+    );
     expect(actual).toEqual(expected);
 });

@@ -23,13 +23,16 @@ export declare function query<T1, T2, T3, T4, T5, T6, T7>(a: T1, b: (arg: T1) =>
 export declare function query<T1, T2, T3, T4, T5, T6, T7, T8>(a: T1, b: (arg: T1) => T2, c: (arg: T2) => T3, d: (arg: T3) => T4, e: (arg: T4) => T5, f: (arg: T5) => T6, g: (arg: T6) => T7, h: (arg: T7) => T8): T8;
 export declare function query<T1, T2, T3, T4, T5, T6, T7, T8, T9>(a: T1, b: (arg: T1) => T2, c: (arg: T2) => T3, d: (arg: T3) => T4, e: (arg: T4) => T5, f: (arg: T5) => T6, g: (arg: T6) => T7, h: (arg: T7) => T8, i: (arg: T8) => T9): T9;
 export declare function query<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10>(a: T1, b: (arg: T1) => T2, c: (arg: T2) => T3, d: (arg: T3) => T4, e: (arg: T4) => T5, f: (arg: T5) => T6, g: (arg: T6) => T7, h: (arg: T7) => T8, i: (arg: T8) => T9, j: (arg: T9) => T10): T10;
-export declare function ascendingBy<T>(property?: string | ((obj: T) => any)): (a: T, b: T) => 1 | 0 | -1;
-export declare function descendingBy<T>(property?: string | ((obj: T) => any)): (a: T, b: T) => 1 | 0 | -1;
+export declare function ascendingBy<T>(property?: keyof T | ((obj: T) => any)): (a: T, b: T) => 1 | 0 | -1;
+export declare function descendingBy<T>(property?: keyof T | ((obj: T) => any)): (a: T, b: T) => 1 | 0 | -1;
 export declare function sort<T>(...compareFns: Array<(a: T, b: T) => -1 | 0 | 1>): (array: T[]) => T[];
 export declare function matchesToArray<T = RegExpExecArray>(str: string, regex: RegExp, convertor?: (x: RegExpExecArray) => T): T[];
 interface Dictionary<T> {
     [key: string]: T;
 }
-export declare function groupBy<TSource>(property: string | ((obj: TSource) => string)): (source: Iterable<TSource>) => Dictionary<TSource[]>;
-export declare function countBy<TSource>(property?: (string | ((obj: TSource) => string))): (source: Iterable<TSource>) => Dictionary<number>;
+export declare function groupBy<TSource>(property: keyof TSource | ((obj: TSource) => string)): (source: Iterable<TSource>) => Dictionary<TSource[]>;
+export declare function countBy<TSource>(property?: keyof TSource | ((obj: TSource) => string)): (source: Iterable<TSource>) => Dictionary<number>;
+export declare function cycle<T>(input: Iterable<T>): IterableIterator<T>;
+export declare function count<TSource>(predicate?: (item: TSource) => boolean): (source: Iterable<TSource>) => number;
+export declare function each<TSource>(action: (item: TSource) => void): (source: Iterable<TSource>) => IterableIterator<TSource>;
 export {};

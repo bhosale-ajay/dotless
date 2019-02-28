@@ -41,7 +41,14 @@ console.log(items);
    // return true as the list has items
    any()([1, 2, 3]);
    ```
-2. countBy
+1. count
+   ```JavaScript
+   /*
+   returns 1
+   */
+   count<number>(n => n % 2 === 0)([1, 2, 3]);
+   ```
+1. countBy
    ```JavaScript
    /*
    returns {
@@ -59,14 +66,39 @@ console.log(items);
    } */
    oddOrEven([1, 2, 3, 4, 5, 6, 7, 8, 9])
    ```
-3. filter
+1. cycle
+   ```JavaScript
+   /*
+   Iterates infinitely over a collection
+
+   returns [1, 2, 3, 1, 2, 3, 1, 2, 3, 1]
+   */
+   query(cycle([1, 2, 3]), 
+         take(10),
+         toArray);
+   ```
+1. each
+   ```JavaScript
+   /*
+   Calls a method for every item in iterator
+   The iterator must be consumed (toArray, count)
+   Updates every property "v" for every item
+   */
+   const input = [{ n: 1, v: false}, 
+                  { n: 2, v: false}];
+   query(input,
+      each(p => { p.v = true; }),
+      count(p => p.v)
+   );
+   ```
+1. filter
    ```JavaScript
    // works similar to Array.filter
    const onlyOdd = filter(n => n % 2 !== 0)
    // Returns [1, 3, 5, 7, 9]
    onlyOdd([1, 2, 3, 4, 5, 6, 7, 8, 9, 10])
    ```
-4. findPairs
+1. findPairs
    ```JavaScript
    // helps finding pairs from source
    // pairs can be
@@ -106,7 +138,7 @@ console.log(items);
    ]; */
    duplicateItemsMutuallyExclusive([2, 6, 4, 6, 1, 8, 2, 1]);
    ```
-5. first
+1. first
    ```JavaScript
    // returns 11
    first()([11, 12, 13]);
@@ -133,7 +165,7 @@ console.log(items);
    // returns 2
    firstDuplicate([1, 2, 4, 2, 5, 4]);
    ```
-6. groupBy
+1. groupBy
    ```JavaScript
    // groupBy by property
    const timNY = { n: "Tim",  s : "NY"};
@@ -161,14 +193,14 @@ console.log(items);
    } */
    groupBy(n => n % 2 ? "odd" : "even")(input);
    ```
-7. map
+1. map
    ```JavaScript
    // similar to Array.map
    const doubleIt = map(n => n * 2);
    // returns [4, 6, 8, 10];
    doubleIt([2, 3, 4, 5]);
    ```
-8. mapMany
+1. mapMany
    ```JavaScript
     const expand = mapMany(function*(n) {
         for (let i = 0; i <= n; i++) {
@@ -178,7 +210,7 @@ console.log(items);
    // returns [0, 1, 2, 0, 1, 2, 3];
    expand([2, 3]);
    ```
-9. mapWithLast
+1. mapWithLast
    ```JavaScript
    // Combines reduce and map
    // instead of returning a single accumulator returns iterator of accumulator
@@ -191,7 +223,7 @@ console.log(items);
    // returns [{distance: 1, hops: 1}, {distance: 5, hops: 2}, {distance: 7, hops: 3}]
    run(strides);
    ```
-9. matchesToArray
+1. matchesToArray
    ```JavaScript
    // Applies regex to string and maps matches to array
    // matches can be converted using an optional convertor
@@ -200,7 +232,7 @@ console.log(items);
    // returns [3088, 2748, -1039, -103, -136, 94]
    matchesToArray(input, regex, m => +m[0]);
    ```
-0. query
+1. query
    ```JavaScript
    // The engine of the library
    // Takes array of functions
@@ -225,14 +257,14 @@ console.log(items);
    // returns [8, 6, 4, 2]
    range(8, 1, -2)
    ```
-2. reduce
+1. reduce
    ```JavaScript
    // works similar to Array.reduce, with a little change the seed value is not optional
    const sumIt = reduce((acc, n) => acc + n, 0);
    // returns 55
    const actual = sumIt([1, 2, 3, 4, 5, 6, 7, 8, 9, 10]);
    ```
-3. sort, ascendingBy, descendingBy
+1. sort, ascendingBy, descendingBy
    ```JavaScript
    const tim12 = { name : "Tim",  age : 12 };
    const abe21 = { name : "Abe",  age : 21 };
@@ -243,13 +275,13 @@ console.log(items);
    // returns [ bill22, abe21, mark21, tim12 ]
    sorter(items);
    ```
-4. take
+1. take
    ```JavaScript
    const takeTwo = take(2);
    // returns [11, 12]
    takeTwo([11, 12, 13, 14]);
    ```
-5. toArray
+1. toArray
    ```JavaScript
    // Just an alias for Array.from
    // Returns [1, 2, 3, 4] by consuming iterator returned by range
