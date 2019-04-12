@@ -1,5 +1,5 @@
-import { any, count, countBy, cycle, each, filter,
-         first, groupBy, map, mapMany, mapWithLast,
+import { any, count, countBy, cycle, each, filter, first,
+         groupBy, iterate, map, mapMany, mapWithLast,
          matchesToArray, query, reduce, take, toArray } from "../dotless";
 
 test("map", () => {
@@ -331,5 +331,26 @@ test("each", () => {
         // invoke the each action
         count(p => p.v)
     );
+    expect(actual).toEqual(expected);
+});
+
+test("iterate 01", () => {
+    const actual = query(
+        iterate(a => a + 2, 10),
+        take(5),
+        toArray
+    );
+    const expected = [10, 12, 14, 16, 18];
+    expect(actual).toEqual(expected);
+});
+
+test("iterate 02", () => {
+    const actual = query(
+        iterate(([a, b]) => [b, a + b], [0, 1]),
+        map(([a, _]) => a),
+        take(10),
+        toArray
+    );
+    const expected = [0, 1, 1, 2, 3, 5, 8, 13, 21, 34];
     expect(actual).toEqual(expected);
 });

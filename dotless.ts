@@ -292,3 +292,12 @@ export function each<TSource>(action: (item: TSource) => void) {
         }
     };
 }
+
+export function* iterate<T>(iterator: (current: T) => T, base: T) {
+    let current = base;
+    yield current;
+    while (true) {
+        current = iterator(current);
+        yield current;
+    }
+}

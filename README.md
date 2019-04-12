@@ -193,6 +193,19 @@ console.log(items);
    } */
    groupBy(n => n % 2 ? "odd" : "even")(input);
    ```
+1. iterate
+   ```JavaScript
+   // acts as an infinite loop
+   // first it yields the default value
+   // and calls iterator to generate values
+   // returns [0, 1, 1, 2, 3, 5, 8, 13, 21, 34]
+   query(
+      iterate(([a, b]) => [b, a + b], [0, 1]),
+      map(([a, _]) => a),
+      take(10),
+      toArray
+   );
+   ```
 1. map
    ```JavaScript
    // similar to Array.map

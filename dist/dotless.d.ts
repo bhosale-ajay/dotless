@@ -35,4 +35,5 @@ export declare function countBy<TSource>(property?: keyof TSource | ((obj: TSour
 export declare function cycle<T>(input: Iterable<T>): IterableIterator<T>;
 export declare function count<TSource>(predicate?: (item: TSource) => boolean): (source: Iterable<TSource>) => number;
 export declare function each<TSource>(action: (item: TSource) => void): (source: Iterable<TSource>) => IterableIterator<TSource>;
+export declare function iterate<T>(iterator: (current: T) => T, base: T): IterableIterator<T>;
 export {};
