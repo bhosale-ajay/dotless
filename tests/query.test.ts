@@ -1,6 +1,18 @@
-import { any, ascendingBy, descendingBy, filter, findPairs,
-         first, map, query, range, reduce, sort, take, toArray
-    } from "../dotless";
+import {
+    any,
+    ascendingBy,
+    descendingBy,
+    filter,
+    findPairs,
+    first,
+    map,
+    query,
+    range,
+    reduce,
+    sort,
+    take,
+    toArray
+} from "../dotless";
 
 test("query 01", () => {
     const actual = query(
@@ -45,10 +57,7 @@ test("query 04", () => {
 });
 
 test("query 05", () => {
-    const actual = query(
-        range(1, 10),
-        reduce((acc, n) => acc + n, 0)
-    );
+    const actual = query(range(1, 10), reduce((acc, n) => acc + n, 0));
     const expected = 55;
     expect(actual).toEqual(expected);
 });
@@ -129,11 +138,7 @@ test("query 10", () => {
 });
 
 test("query X", () => {
-    const actual = query(
-        1,
-        n => n + n,
-        n => `The value is ${n}.`
-    );
+    const actual = query(1, n => n + n, n => `The value is ${n}.`);
     const expected = `The value is 2.`;
     expect(actual).toEqual(expected);
 });

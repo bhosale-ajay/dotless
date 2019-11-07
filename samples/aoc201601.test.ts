@@ -34,12 +34,12 @@ const noChange: Factor = 0;
 const increase: Factor = 1;
 
 const north: DirectionInformation = {
-    L : {
+    L: {
         xFactor: decrease,
         yFactor: noChange,
         nextDirection: "west"
     },
-    R : {
+    R: {
         xFactor: increase,
         yFactor: noChange,
         nextDirection: "east"
@@ -47,40 +47,41 @@ const north: DirectionInformation = {
 };
 
 const east: DirectionInformation = {
-    L : {
+    L: {
         xFactor: noChange,
         yFactor: increase,
         nextDirection: "north"
     },
-    R : {
+    R: {
         xFactor: noChange,
         yFactor: decrease,
         nextDirection: "south"
     }
 };
 
-const west: DirectionInformation = { L : east.R, R : east.L };
-const south: DirectionInformation = { L : north.R, R : north.L };
+const west: DirectionInformation = { L: east.R, R: east.L };
+const south: DirectionInformation = { L: north.R, R: north.L };
 const directions = { north, east, west, south };
 const startingPosition: Position = {
-    x : 0,
-    y : 0,
+    x: 0,
+    y: 0,
     direction: "north"
 };
 
-const matchToInstruction = (m: RegExpExecArray) => ({ leftOrRight: m[1], steps: +m[2]} as Instruction);
+const matchToInstruction = (m: RegExpExecArray) =>
+    ({ leftOrRight: m[1], steps: +m[2] } as Instruction);
 
-const readInstructions = (doc: string) => matchesToArray(doc, /(R|L)(\d+)/g, matchToInstruction);
+const readInstructions = (doc: string) =>
+    matchesToArray(doc, /(R|L)(\d+)/g, matchToInstruction);
 
 const getAbsDistance = (p: Point) => Math.abs(p.x) + Math.abs(p.y);
 
-function turn(cp: Position,
-              ins: Instruction): Position {
+function turn(cp: Position, ins: Instruction): Position {
     const impact = directions[cp.direction][ins.leftOrRight];
     return {
-        x: cp.x + (impact.xFactor * ins.steps),
-        y: cp.y + (impact.yFactor * ins.steps),
-        direction : impact.nextDirection
+        x: cp.x + impact.xFactor * ins.steps,
+        y: cp.y + impact.yFactor * ins.steps,
+        direction: impact.nextDirection
     };
 }
 
@@ -93,21 +94,23 @@ function findShortestPath(document: string) {
 }
 
 function takeSteps(from: Position) {
-    let {x, y, direction} = from;
-    return function*({leftOrRight, steps}: Instruction) {
-        const {xFactor, yFactor, nextDirection} = directions[direction][leftOrRight];
+    let { x, y, direction } = from;
+    return function*({ leftOrRight, steps }: Instruction) {
+        const { xFactor, yFactor, nextDirection } = directions[direction][
+            leftOrRight
+        ];
         for (let i = 0; i < steps; i++) {
             x = x + xFactor;
             y = y + yFactor;
             direction = nextDirection;
-            yield {x, y};
+            yield { x, y };
         }
     };
 }
 
 function visitedTwice() {
     const visited: Dictionary<boolean> = {};
-    return ({x, y}: Point): boolean => {
+    return ({ x, y }: Point): boolean => {
         const key = `b${x}_${y}`;
         if (visited[key]) {
             return true;
@@ -123,7 +126,7 @@ const findHQ = (document: string) => {
         readInstructions(document),
         mapMany(takeSteps(startingPosition)),
         first(visitedTwice()),
-        p => p ? getAbsDistance(p) : 0
+        p => (p ? getAbsDistance(p) : 0)
     );
 };
 

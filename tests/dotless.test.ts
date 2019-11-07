@@ -1,6 +1,22 @@
-import { any, count, countBy, cycle, each, filter, first,
-         groupBy, iterate, map, mapMany, mapWithLast,
-         matchesToArray, query, reduce, take, toArray } from "../dotless";
+import {
+    any,
+    count,
+    countBy,
+    cycle,
+    each,
+    filter,
+    first,
+    groupBy,
+    iterate,
+    map,
+    mapMany,
+    mapWithLast,
+    matchesToArray,
+    query,
+    reduce,
+    take,
+    toArray
+} from "../dotless";
 
 test("map", () => {
     const doubleIt = map<number, number>(n => n * 2);
@@ -23,14 +39,21 @@ test("mapMany", () => {
 });
 
 test("mapWithLast", () => {
-    const location = {distance: 0, hops: 0};
+    const location = { distance: 0, hops: 0 };
     const strides = [1, 4, 2];
-    const run = mapWithLast(({distance, hops}, stride: number) => ({
-        distance: distance + stride,
-        hops: hops + 1
-    }), location);
+    const run = mapWithLast(
+        ({ distance, hops }, stride: number) => ({
+            distance: distance + stride,
+            hops: hops + 1
+        }),
+        location
+    );
     const actual = run(strides);
-    const expected = [{distance: 1, hops: 1}, {distance: 5, hops: 2}, {distance: 7, hops: 3}];
+    const expected = [
+        { distance: 1, hops: 1 },
+        { distance: 5, hops: 2 },
+        { distance: 7, hops: 3 }
+    ];
     expect(toArray(actual)).toEqual(expected);
 });
 
@@ -243,12 +266,12 @@ test("matchesToArray 02", () => {
 
 test("countBy property", () => {
     const input = [
-        { n: "Tim",  s : "NY"},
-        { n: "Bill", s : "WA"},
-        { n: "Steve", s : "CA"},
-        { n: "Andrew", s : "WA"}
+        { n: "Tim", s: "NY" },
+        { n: "Bill", s: "WA" },
+        { n: "Steve", s: "CA" },
+        { n: "Andrew", s: "WA" }
     ];
-    const expected = { "NY" : 1, "CA" : 1, "WA" : 2};
+    const expected = { NY: 1, CA: 1, WA: 2 };
     const actual = countBy("s")(input);
     expect(actual).toEqual(expected);
 });
@@ -256,37 +279,32 @@ test("countBy property", () => {
 test("countBy function", () => {
     const input = [1, 2, 3, 4, 5, 6, 7, 8, 9];
     const expected = {
-        "odd" : 5,
-        "even" : 4
+        odd: 5,
+        even: 4
     };
-    const actual = countBy<number>(n => n % 2 ? "odd" : "even")(input);
+    const actual = countBy<number>(n => (n % 2 ? "odd" : "even"))(input);
     expect(actual).toEqual(expected);
 });
 
 test("countBy self", () => {
     const input = [1, 2, 2, 1, 1, 1, 3, 4, 4];
     const expected = {
-        "1" : 4,
-        "2" : 2,
-        "3" : 1,
-        "4" : 2
+        "1": 4,
+        "2": 2,
+        "3": 1,
+        "4": 2
     };
     const actual = countBy<number>()(input);
     expect(actual).toEqual(expected);
 });
 
 test("groupBy property", () => {
-    const timNY = { n: "Tim",  s : "NY"};
-    const billWA = { n: "Bill", s : "WA"};
-    const steveCA = { n: "Steve", s : "CA"};
-    const andrewWA = { n: "Andrew", s : "WA"};
-    const input = [
-        timNY,
-        billWA,
-        steveCA,
-        andrewWA
-    ];
-    const expected = { "NY" : [timNY], "CA" : [steveCA], "WA" : [billWA, andrewWA]};
+    const timNY = { n: "Tim", s: "NY" };
+    const billWA = { n: "Bill", s: "WA" };
+    const steveCA = { n: "Steve", s: "CA" };
+    const andrewWA = { n: "Andrew", s: "WA" };
+    const input = [timNY, billWA, steveCA, andrewWA];
+    const expected = { NY: [timNY], CA: [steveCA], WA: [billWA, andrewWA] };
     const actual = groupBy("s")(input);
     expect(actual).toEqual(expected);
 });
@@ -294,10 +312,10 @@ test("groupBy property", () => {
 test("groupBy function", () => {
     const input = [1, 2, 3, 4, 5, 6, 7, 8, 9];
     const expected = {
-        "odd" : [1, 3, 5, 7, 9],
-        "even" : [2, 4, 6, 8]
+        odd: [1, 3, 5, 7, 9],
+        even: [2, 4, 6, 8]
     };
-    const actual = groupBy<number>(n => n % 2 ? "odd" : "even")(input);
+    const actual = groupBy<number>(n => (n % 2 ? "odd" : "even"))(input);
     expect(actual).toEqual(expected);
 });
 
@@ -323,10 +341,13 @@ test("count items matching a predicate", () => {
 });
 
 test("each", () => {
-    const input = [{ n: 1, v: false}, {n: 2, v: false}];
+    const input = [{ n: 1, v: false }, { n: 2, v: false }];
     const expected = 2;
-    const actual = query(input,
-        each(p => { p.v = true; }),
+    const actual = query(
+        input,
+        each(p => {
+            p.v = true;
+        }),
         // the iterator has to be consumed to
         // invoke the each action
         count(p => p.v)
@@ -335,11 +356,7 @@ test("each", () => {
 });
 
 test("iterate 01", () => {
-    const actual = query(
-        iterate(a => a + 2, 10),
-        take(5),
-        toArray
-    );
+    const actual = query(iterate(a => a + 2, 10), take(5), toArray);
     const expected = [10, 12, 14, 16, 18];
     expect(actual).toEqual(expected);
 });

@@ -1,18 +1,18 @@
-export declare function range(from: number, to: number, step?: number): IterableIterator<number>;
-export declare function map<TSource, TResult>(convertor: (item: TSource) => TResult): (source: Iterable<TSource>) => IterableIterator<TResult>;
-export declare function mapMany<TSource, TResult>(convertor: (item: TSource) => IterableIterator<TResult>): (source: Iterable<TSource>) => IterableIterator<TResult>;
-export declare function mapWithLast<TSource, TResult>(convertor: (last: TResult, item: TSource) => TResult, seed: TResult): (source: Iterable<TSource>) => IterableIterator<TResult>;
-export declare function filter<TSource>(predicate: (item: TSource) => boolean): (source: Iterable<TSource>) => IterableIterator<TSource>;
+export declare function range(from: number, to: number, step?: number): Generator<number, void, unknown>;
+export declare function map<TSource, TResult>(convertor: (item: TSource) => TResult): (source: Iterable<TSource>) => Generator<TResult, void, unknown>;
+export declare function mapMany<TSource, TResult>(convertor: (item: TSource) => IterableIterator<TResult>): (source: Iterable<TSource>) => Generator<TResult, void, undefined>;
+export declare function mapWithLast<TSource, TResult>(convertor: (last: TResult, item: TSource) => TResult, seed: TResult): (source: Iterable<TSource>) => Generator<TResult, void, unknown>;
+export declare function filter<TSource>(predicate: (item: TSource) => boolean): (source: Iterable<TSource>) => Generator<TSource, void, unknown>;
 export declare function reduce<TSource, TResult>(callback: (accumulator: TResult, item: TSource, index: number) => TResult, initialValue: TResult): (source: Iterable<TSource>) => TResult;
 export declare function any<TSource>(predicate?: (item: TSource) => boolean): (source: Iterable<TSource>) => boolean;
 export declare function first<TSource>(predicate?: (item: TSource) => boolean): (source: Iterable<TSource>) => TSource | null;
-export declare function take<TSource>(n: number): (source: Iterable<TSource>) => IterableIterator<TSource>;
+export declare function take<TSource>(n: number): (source: Iterable<TSource>) => Generator<TSource, void, unknown>;
 export declare function findPairs<TSource>(comparer: (a: TSource, b: TSource) => boolean, mutuallyExclusive?: boolean): (source: TSource[]) => Iterable<[TSource, TSource, number, number]>;
 export declare const toArray: {
     <T>(arrayLike: ArrayLike<T>): T[];
-    <T, U>(arrayLike: ArrayLike<T>, mapfn: (v: T, k: number) => U, thisArg?: any): U[];
-    <T>(iterable: Iterable<T> | ArrayLike<T>): T[];
-    <T, U>(iterable: Iterable<T> | ArrayLike<T>, mapfn: (v: T, k: number) => U, thisArg?: any): U[];
+    <T_1, U>(arrayLike: ArrayLike<T_1>, mapfn: (v: T_1, k: number) => U, thisArg?: any): U[];
+    <T_2>(iterable: Iterable<T_2> | ArrayLike<T_2>): T_2[];
+    <T_3, U_1>(iterable: Iterable<T_3> | ArrayLike<T_3>, mapfn: (v: T_3, k: number) => U_1, thisArg?: any): U_1[];
 };
 export declare function query<T1, T2>(a: T1, b: (arg: T1) => T2): T2;
 export declare function query<T1, T2, T3>(a: T1, b: (arg: T1) => T2, c: (arg: T2) => T3): T3;
@@ -32,8 +32,8 @@ interface Dictionary<T> {
 }
 export declare function groupBy<TSource>(property: keyof TSource | ((obj: TSource) => string)): (source: Iterable<TSource>) => Dictionary<TSource[]>;
 export declare function countBy<TSource>(property?: keyof TSource | ((obj: TSource) => string)): (source: Iterable<TSource>) => Dictionary<number>;
-export declare function cycle<T>(input: Iterable<T>): IterableIterator<T>;
+export declare function cycle<T>(input: Iterable<T>): Generator<T, void, undefined>;
 export declare function count<TSource>(predicate?: (item: TSource) => boolean): (source: Iterable<TSource>) => number;
-export declare function each<TSource>(action: (item: TSource) => void): (source: Iterable<TSource>) => IterableIterator<TSource>;
-export declare function iterate<T>(iterator: (current: T) => T, base: T): IterableIterator<T>;
+export declare function each<TSource>(action: (item: TSource) => void): (source: Iterable<TSource>) => Generator<TSource, void, unknown>;
+export declare function iterate<T>(iterator: (current: T) => T, base: T): Generator<T, void, unknown>;
 export {};

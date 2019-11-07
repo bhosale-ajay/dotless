@@ -46,7 +46,7 @@ console.log(items);
    /*
    returns 1
    */
-   count<number>(n => n % 2 === 0)([1, 2, 3]);
+   count(n => n % 2 === 0)([1, 2, 3]);
    ```
 1. countBy
    ```JavaScript
