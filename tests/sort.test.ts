@@ -70,3 +70,24 @@ test("sort 02", () => {
     const actual = sorter(items);
     expect(actual).toEqual(items);
 });
+
+interface Entity {
+    name: string;
+    founded: number;
+}
+
+test("sort 03", () => {
+    const entitySorter = sort<Entity>(
+        descendingBy("founded"),
+        ascendingBy("name")
+    );
+    const city1 = { name: "New York", founded: 1624, state: "NY" };
+    // Seattle was founded on 1851 and not 1833, this is just for testing
+    const city2 = { name: "Seattle", founded: 1833, state: "WA" };
+    const city3 = { name: "Chicago", founded: 1833, state: "IL" };
+    expect(entitySorter([city1, city2, city3])).toEqual([city3, city2, city1]);
+    const co1 = { name: "Microsoft", founded: 1975, founders: "BG, PA" };
+    const co2 = { name: "Apple", founded: 1976, founders: "SJ, SW, RW" };
+    const co3 = { name: "ABC", founded: 1976, founders: "AB" };
+    expect(entitySorter([co1, co2, co3])).toEqual([co3, co2, co1]);
+});

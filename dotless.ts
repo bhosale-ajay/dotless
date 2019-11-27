@@ -251,7 +251,7 @@ export function sort<T>(...compareFns: Array<(a: T, b: T) => -1 | 0 | 1>) {
         }
         return result;
     };
-    return (array: T[]) => array.sort(sorter);
+    return <U extends T>(array: U[]) => array.sort(sorter);
 }
 
 export function matchesToArray<T = RegExpExecArray>(
