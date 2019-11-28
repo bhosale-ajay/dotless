@@ -1,4 +1,13 @@
-import { ascendingBy, descendingBy, sort } from "../dotless";
+import {
+    ascendingBy,
+    descendingBy,
+    sort,
+    query,
+    filter,
+    toArray,
+    map,
+    mergeCompareFns
+} from "../dotless";
 
 interface Person {
     name: string;
@@ -15,6 +24,9 @@ test("sort with properties", () => {
     const actual = sorter(items);
     const expected = [bill22, abe21, mark21, tim12];
     expect(actual).toEqual(expected);
+    // mergeCompareFns can be used with inbuilt "sort" method of array
+    items.sort(mergeCompareFns(descendingBy("age"), ascendingBy("name")));
+    expect(items).toEqual(expected);
 });
 
 test("sort with function 01", () => {
@@ -76,6 +88,18 @@ interface Entity {
     founded: number;
 }
 
+interface City {
+    name: string;
+    founded: number;
+    state: string;
+}
+
+interface Company {
+    name: string;
+    founded: number;
+    founders: string;
+}
+
 test("sort 03", () => {
     const entitySorter = sort<Entity>(
         descendingBy("founded"),
@@ -85,9 +109,53 @@ test("sort 03", () => {
     // Seattle was founded on 1851 and not 1833, this is just for testing
     const city2 = { name: "Seattle", founded: 1833, state: "WA" };
     const city3 = { name: "Chicago", founded: 1833, state: "IL" };
-    expect(entitySorter([city1, city2, city3])).toEqual([city3, city2, city1]);
+    const sortedCities: City[] = entitySorter([city1, city2, city3]);
+    expect(sortedCities).toEqual([city3, city2, city1]);
     const co1 = { name: "Microsoft", founded: 1975, founders: "BG, PA" };
     const co2 = { name: "Apple", founded: 1976, founders: "SJ, SW, RW" };
     const co3 = { name: "ABC", founded: 1976, founders: "AB" };
-    expect(entitySorter([co1, co2, co3])).toEqual([co3, co2, co1]);
+    const sortedCompanies: Company[] = entitySorter([co1, co2, co3]);
+    expect(sortedCompanies).toEqual([co3, co2, co1]);
+});
+
+test("sort 04", () => {
+    const city1 = { name: "New York", founded: 1624, state: "NY" };
+    const city2 = { name: "Seattle", founded: 1833, state: "WA" };
+    const city3 = { name: "Chicago", founded: 1833, state: "IL" };
+    const city4 = { name: "IL City", founded: 1833, state: "IL" };
+    const city5 = { name: "AZ City", founded: 1843, state: "AZ" };
+    const cities: City[] = [city1, city2, city3, city4, city5];
+    const actual = query(
+        cities,
+        filter(c => c.founded > 1700),
+        toArray,
+        sort<City>(
+            ascendingBy("founded"),
+            ascendingBy("state"),
+            ascendingBy("name")
+        ),
+        map(c => c.name),
+        toArray
+    );
+    expect(actual).toEqual([city3.name, city4.name, city2.name, city5.name]);
+});
+
+test("sort 05", () => {
+    const city1 = { name: "New York", founded: 1624, state: "NY" };
+    const city2 = { name: "Seattle", founded: 1833, state: "WA" };
+    const city3 = { name: "Chicago", founded: 1833, state: "IL" };
+    const city4 = { name: "IL City", founded: 1833, state: "IL" };
+    const city5 = { name: "AZ City", founded: 1843, state: "AZ" };
+    const cities: City[] = [city1, city2, city3, city4, city5];
+    const actual = cities
+        .filter(c => c.founded > 1700)
+        .sort(
+            mergeCompareFns(
+                ascendingBy("founded"),
+                ascendingBy("state"),
+                ascendingBy("name")
+            )
+        )
+        .map(c => c.name);
+    expect(actual).toEqual([city3.name, city4.name, city2.name, city5.name]);
 });

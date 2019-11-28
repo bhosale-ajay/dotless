@@ -135,7 +135,9 @@ export function findPairs<TSource>(
     };
 }
 
-export const toArray = Array.from;
+export function toArray<T>(arg: Generator<T, any, unknown> | Iterable<T>): T[] {
+    return Array.from(arg) as T[];
+}
 
 export function query<T1, T2>(a: T1, b: (arg: T1) => T2): T2;
 export function query<T1, T2, T3>(
@@ -239,9 +241,9 @@ export function descendingBy<T>(
         }
     };
 }
-
-export function sort<T>(...compareFns: Array<(a: T, b: T) => -1 | 0 | 1>) {
-    const sorter = (a: T, b: T) => {
+type Compare<T> = (a: T, b: T) => -1 | 0 | 1;
+export function mergeCompareFns<T>(...compareFns: Array<Compare<T>>) {
+    return (a: T, b: T) => {
         let result = 0;
         for (const compareFn of compareFns) {
             result = compareFn(a, b);
@@ -251,7 +253,10 @@ export function sort<T>(...compareFns: Array<(a: T, b: T) => -1 | 0 | 1>) {
         }
         return result;
     };
-    return <U extends T>(array: U[]) => array.sort(sorter);
+}
+
+export function sort<T>(...compareFns: Array<Compare<T>>) {
+    return <U extends T>(array: U[]) => array.sort(mergeCompareFns(...compareFns));
 }
 
 export function matchesToArray<T = RegExpExecArray>(

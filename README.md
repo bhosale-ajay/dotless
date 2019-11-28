@@ -277,7 +277,7 @@ console.log(items);
    // returns 55
    const actual = sumIt([1, 2, 3, 4, 5, 6, 7, 8, 9, 10]);
    ```
-1. sort, ascendingBy, descendingBy
+1. sort, ascendingBy, descendingBy, mergeCompareFns
    ```JavaScript
    const tim12 = { name : "Tim",  age : 12 };
    const abe21 = { name : "Abe",  age : 21 };
@@ -287,6 +287,9 @@ console.log(items);
    const sorter = sort(descendingBy("age"), ascendingBy("name"));
    // returns [ bill22, abe21, mark21, tim12 ]
    sorter(items);
+   // sort the items array as follows [ bill22, abe21, mark21, tim12 ]
+   // mergeCompareFns merge functions to use them with inbuilt "sort" method
+   items.sort(mergeCompareFns(descendingBy("age"), ascendingBy("name")))
    ```
 1. take
    ```JavaScript
