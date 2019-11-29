@@ -255,8 +255,32 @@ export function mergeCompareFns<T>(...compareFns: Array<Compare<T>>) {
     };
 }
 
+export function sort<T>(a: Compare<T>): <U extends T>(array: U[]) => U[];
+export function sort<T1, T2 = T1>(
+    a: Compare<T1>,
+    b: Compare<T2>
+): <U extends T1 & T2>(array: U[]) => U[];
+export function sort<T1, T2 = T1, T3 = T1>(
+    a: Compare<T1>,
+    b: Compare<T2>,
+    c: Compare<T3>
+): <U extends T1 & T2 & T3>(array: U[]) => U[];
+export function sort<T1, T2 = T1, T3 = T1, T4 = T1>(
+    a: Compare<T1>,
+    b: Compare<T2>,
+    c: Compare<T3>,
+    d: Compare<T4>
+): <U extends T1 & T2 & T3 & T4>(array: U[]) => U[];
+export function sort<T1, T2 = T1, T3 = T1, T4 = T1, T5 = T1>(
+    a: Compare<T1>,
+    b: Compare<T2>,
+    c: Compare<T3>,
+    d: Compare<T4>,
+    e: Compare<T5>
+): <U extends T1 & T2 & T3 & T4 & T5>(array: U[]) => U[];
 export function sort<T>(...compareFns: Array<Compare<T>>) {
-    return <U extends T>(array: U[]) => array.sort(mergeCompareFns(...compareFns));
+    return <U extends T>(array: U[]) =>
+        array.sort(mergeCompareFns(...compareFns));
 }
 
 export function matchesToArray<T = RegExpExecArray>(

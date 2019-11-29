@@ -100,10 +100,26 @@ interface Company {
     founders: string;
 }
 
-test("sort 03", () => {
+test("sort 03 : Can use same sorter for different types.", () => {
+    const entitySorter = sort(descendingBy("founded"), ascendingBy("name"));
+    const city1 = { name: "New York", founded: 1624, state: "NY" };
+    // Seattle was founded on 1851 and not 1833, this is just for testing
+    const city2 = { name: "Seattle", founded: 1833, state: "WA" };
+    const city3 = { name: "Chicago", founded: 1833, state: "IL" };
+    const sortedCities: City[] = entitySorter([city1, city2, city3]);
+    expect(sortedCities).toEqual([city3, city2, city1]);
+    const co1 = { name: "Microsoft", founded: 1975, founders: "BG, PA" };
+    const co2 = { name: "Apple", founded: 1976, founders: "SJ, SW, RW" };
+    const co3 = { name: "ABC", founded: 1976, founders: "AB" };
+    const sortedCompanies: Company[] = entitySorter([co1, co2, co3]);
+    expect(sortedCompanies).toEqual([co3, co2, co1]);
+});
+
+test("sort 03B : Can use same sorter with a Type for extended types.", () => {
+    // strongly typed sort can take functions as parameter
     const entitySorter = sort<Entity>(
         descendingBy("founded"),
-        ascendingBy("name")
+        ascendingBy(e => e.name)
     );
     const city1 = { name: "New York", founded: 1624, state: "NY" };
     // Seattle was founded on 1851 and not 1833, this is just for testing
@@ -129,11 +145,7 @@ test("sort 04", () => {
         cities,
         filter(c => c.founded > 1700),
         toArray,
-        sort<City>(
-            ascendingBy("founded"),
-            ascendingBy("state"),
-            ascendingBy("name")
-        ),
+        sort(ascendingBy("founded"), ascendingBy("state"), ascendingBy("name")),
         map(c => c.name),
         toArray
     );
@@ -153,7 +165,7 @@ test("sort 05", () => {
             mergeCompareFns(
                 ascendingBy("founded"),
                 ascendingBy("state"),
-                ascendingBy("name")
+                ascendingBy(x => x.name)
             )
         )
         .map(c => c.name);
