@@ -21,7 +21,7 @@ export declare function query<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10>(a: T1, b:
 export declare function ascendingBy<T>(property?: keyof T | ((obj: T) => any)): (a: T, b: T) => 1 | 0 | -1;
 export declare function descendingBy<T>(property?: keyof T | ((obj: T) => any)): (a: T, b: T) => 1 | 0 | -1;
 declare type Compare<T> = (a: T, b: T) => -1 | 0 | 1;
-export declare function mergeCompareFns<T>(...compareFns: Array<Compare<T>>): (a: T, b: T) => number;
+export declare function mergeCompareFns<T>(...compareFns: Array<Compare<T>>): Compare<T>;
 export declare function sort<T>(a: Compare<T>): <U extends T>(array: U[]) => U[];
 export declare function sort<T1, T2 = T1>(a: Compare<T1>, b: Compare<T2>): <U extends T1 & T2>(array: U[]) => U[];
 export declare function sort<T1, T2 = T1, T3 = T1>(a: Compare<T1>, b: Compare<T2>, c: Compare<T3>): <U extends T1 & T2 & T3>(array: U[]) => U[];

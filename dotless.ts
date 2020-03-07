@@ -242,9 +242,9 @@ export function descendingBy<T>(
     };
 }
 type Compare<T> = (a: T, b: T) => -1 | 0 | 1;
-export function mergeCompareFns<T>(...compareFns: Array<Compare<T>>) {
+export function mergeCompareFns<T>(...compareFns: Array<Compare<T>>) : Compare<T> {
     return (a: T, b: T) => {
-        let result = 0;
+        let result : -1 | 0 | 1 = 0;
         for (const compareFn of compareFns) {
             result = compareFn(a, b);
             if (result !== 0) {
