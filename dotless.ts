@@ -1,3 +1,5 @@
+export * from "./railway";
+
 export function* range(from: number, to: number, step = 1) {
     let current = from;
     if (step === 0) {
@@ -242,9 +244,11 @@ export function descendingBy<T>(
     };
 }
 type Compare<T> = (a: T, b: T) => -1 | 0 | 1;
-export function mergeCompareFns<T>(...compareFns: Array<Compare<T>>) : Compare<T> {
+export function mergeCompareFns<T>(
+    ...compareFns: Array<Compare<T>>
+): Compare<T> {
     return (a: T, b: T) => {
-        let result : -1 | 0 | 1 = 0;
+        let result: -1 | 0 | 1 = 0;
         for (const compareFn of compareFns) {
             result = compareFn(a, b);
             if (result !== 0) {

@@ -303,7 +303,103 @@ console.log(items);
    // Returns [1, 2, 3, 4] by consuming iterator returned by range
    toArray(range(1, 4))
    ```
+1. Result&lt;T&gt;
 
-*Refer tests for more examples, samples folder contain AOC puzzles solved using above functions.*
+   A type simile to Maybe, it combines two types `SuccessResult<T>` and `ErrorResult`.
+   ```JavaScript
+   function divide(
+     a: number, 
+     b: number) : Result<number> {
+      if(b === 0) {
+        return new ErrorResult("Can not divide by 0.");
+      }
+      return new SuccessResult(a / b);
+   }
+   const r = divide(4, 2);
+   if(r.IsSuccess) {
+       console.log(`Result is ${r.value}`);
+   } else {
+       console.log(r.message);
+   }
+   ```
 
-Read [this medium article](https://medium.com/@ajay.bhosale/linq-style-declarative-and-functional-programming-with-javascript-using-currying-and-generator-9e266e0e32fa) for functional programming concepts.
+1. PromiseResult&lt;T&gt;
+
+   A type which combines Promise and Result&lt;T&gt;.
+
+1. keptPromise
+
+   A function which wraps, creating Promise which returns PromiseResult.
+
+   ```JavaScript
+   function divide(
+       a: number, 
+       b: number) : PromiseResult<number> {
+       return keptPromise((success, failure) => {
+           if(b === 0) {
+               failure("Can not divide by 0.");
+           } else {
+               success(a / b);
+           }
+       });
+   }
+   ```
+
+1. buildTrain
+
+   Executes functions returning Result&lt;T&gt; and returns their `SuccessResult` values as Array. If a function returns `ErrorResult`, then it halts the execution and returns that `ErrorResult`. 
+
+   ```JavaScript
+   const a = 12;
+   const b = true;
+   const c = "done";
+   const r = buildTrain(
+      () => new SuccessResult(a),
+      () => new SuccessResult(b),
+      () => new SuccessResult(c)
+   );
+   expect(r.IsSuccess).toEqual(true);
+   if (r.IsSuccess) {
+      const [x, y, z] = r.value;
+      expect(x).toEqual(a);
+      expect(y).toEqual(b);
+      expect(z).toEqual(c);
+   }
+   ```
+
+1. relayTrain
+
+   This is similar to `query`, but takes functions returning `Result<T>`. It pass the result from previous function to next function. Halts processing if a function returns `ErrorResult` and returns that `ErrorResult`.
+
+   ```JavaScript
+   const r = relayTrain(
+       () => new SuccessResult("1234567890"),
+       data => new SuccessResult(data.length),
+       len => new SuccessResult(len % 2 === 0)
+   );
+   expect(r.IsSuccess).toEqual(true);
+   if (r.IsSuccess) {
+    expect(r.value).toEqual(true);
+   }
+   ```
+
+1. relayTrainAsync
+
+   This is similar to `relayTrain`, but takes functions returning `PromiseResult<T>`. Useful to run chained async functions. Same can be achieved by chaining them with '.then', but has advantage of simplifying the state to check status of PromiseResult.
+
+   ```JavaScript
+   const r = await relayTrainAsync(
+     // Returns PromiseResult<User>
+     () => getUserProfileAsync(),
+     // Returns PromiseResult<PostId[]>
+     (user) => getPostsAsync(u.id),
+     // Returns PromiseResult<PostDetails[]>
+     (ps) => getPostDetails(ps)
+   );
+   ```
+
+*Refer tests for more examples, samples folder contain AOC puzzles solved with `query` functions.*
+
+Read [this article](https://medium.com/@ajay.bhosale/linq-style-declarative-and-functional-programming-with-javascript-using-currying-and-generator-9e266e0e32fa) which explains query and related operators.
+
+Read [this article](https://dev.to/bhosaleajay/async-await-and-keeping-your-promises-2h5e) which explains keptPromise.

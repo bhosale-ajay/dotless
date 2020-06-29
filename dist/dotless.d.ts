@@ -1,3 +1,4 @@
+export * from "./railway";
 export declare function range(from: number, to: number, step?: number): Generator<number, void, unknown>;
 export declare function map<TSource, TResult>(convertor: (item: TSource) => TResult): (source: Iterable<TSource>) => Generator<TResult, void, unknown>;
 export declare function mapMany<TSource, TResult>(convertor: (item: TSource) => IterableIterator<TResult>): (source: Iterable<TSource>) => Generator<TResult, void, undefined>;
@@ -37,4 +38,3 @@ export declare function cycle<T>(input: Iterable<T>): Generator<T, void, undefin
 export declare function count<TSource>(predicate?: (item: TSource) => boolean): (source: Iterable<TSource>) => number;
 export declare function each<TSource>(action: (item: TSource) => void): (source: Iterable<TSource>) => Generator<TSource, void, unknown>;
 export declare function iterate<T>(iterator: (current: T) => T, base: T): Generator<T, void, unknown>;
-export {};
