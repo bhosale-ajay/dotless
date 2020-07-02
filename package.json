@@ -1,7 +1,7 @@
 {
   "name": "dotless",
-  "version": "1.0.0-beta.14",
-  "description": "dotless Linq",
+  "version": "1.0.0",
+  "description": "dotless : Linq in JavaScript, and Railways Programming",
   "engines": {
     "node": "*"
   },
