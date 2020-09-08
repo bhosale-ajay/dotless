@@ -20,7 +20,7 @@ test("buildTrain returns correct results", () => {
     const c = "done";
     const r = buildTrain(
         () => new SuccessResult(a),
-        () => new SuccessResult(b),
+        new SuccessResult(b),
         () => new SuccessResult(c)
     );
     expect(r.IsSuccess).toEqual(true);
@@ -37,9 +37,10 @@ test("buildTrain returns error and do not call subsequent methods", () => {
     const errorMessage = "Some Error";
     const c = "done";
     let called = false;
+    // build Train can take a result or a function which can return Result<T>
     const r = buildTrain(
-        () => new SuccessResult(a),
-        () => new ErrorResult(errorMessage),
+        new SuccessResult(a),
+        new ErrorResult(errorMessage),
         () => {
             called = true;
             return new SuccessResult(c);

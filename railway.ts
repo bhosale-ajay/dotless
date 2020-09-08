@@ -10,7 +10,7 @@ export class SuccessResult<T> {
 
 export type Result<T> = SuccessResult<T> | ErrorResult;
 export type PromiseResult<T> = Promise<Result<T>>;
-export type TrainBuilder<T> = () => Result<T>;
+export type TrainBuilder<T> = Result<T> | (() => Result<T>);
 export type TrainRelayAction<T1, T2> = (i: T1) => Result<T2>;
 export type TrainRelayActionAsync<T1, T2> = (i: T1) => PromiseResult<T2>;
 
@@ -57,7 +57,7 @@ export function buildTrain<T1, T2, T3, T4, T5, T6>(
 export function buildTrain(...builders: TrainBuilder<any>[]): Result<any> {
     const train: any[] = [];
     for (const b of builders) {
-        const r = b();
+        const r = typeof b === "function" ? b() : b;
         if (!r.IsSuccess) {
             return r;
         }

@@ -11,7 +11,7 @@ export declare class SuccessResult<T> {
 }
 export declare type Result<T> = SuccessResult<T> | ErrorResult;
 export declare type PromiseResult<T> = Promise<Result<T>>;
-export declare type TrainBuilder<T> = () => Result<T>;
+export declare type TrainBuilder<T> = Result<T> | (() => Result<T>);
 export declare type TrainRelayAction<T1, T2> = (i: T1) => Result<T2>;
 export declare type TrainRelayActionAsync<T1, T2> = (i: T1) => PromiseResult<T2>;
 export declare function keptPromise<T>(callback: (success: (result: T) => void, failure: (message: string, error?: any) => void) => void): PromiseResult<T>;
