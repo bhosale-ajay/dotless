@@ -277,7 +277,7 @@ console.log(items);
    // returns 55
    const actual = sumIt([1, 2, 3, 4, 5, 6, 7, 8, 9, 10]);
    ```
-1. sort, ascendingBy, descendingBy, mergeCompareFns
+1. sort, ascendingBy, ascendingByLocale, descendingBy, descendingByLocale, mergeCompareFns
    ```JavaScript
    const tim12 = { name : "Tim",  age : 12 };
    const abe21 = { name : "Abe",  age : 21 };
@@ -289,7 +289,29 @@ console.log(items);
    sorter(items);
    // sort the items array as follows [ bill22, abe21, mark21, tim12 ]
    // mergeCompareFns merge functions to use them with inbuilt "sort" method
-   items.sort(mergeCompareFns(descendingBy("age"), ascendingBy("name")))
+   items.sort(mergeCompareFns(descendingBy(i => i.age), ascendingBy("name")))
+
+   const f1 = { name: "AB", online: true, surname: "G" };
+   const f2 = { name: "CD", online: false, surname: "G" };
+   const f3 = { name: "EF", online: true, surname: "K" };
+   const f4 = { name: "GH", online: false, surname: "K" };
+   const f5 = { name: "IJ", online: true, surname: "G" };
+   const fs = [f1, f2, f3, f4, f5];
+
+   const onlineSorter = (a: Friend, b: Friend) =>
+       a.online === b.online ? 0 : a.online ? -1 : 1;
+   const friendSorter = mergeCompareFns(
+       onlineSorter,
+       // Only properties of String type can be passed here
+       ascendingByLocale("surname"),
+       // You can also pass, two more parameters
+       // locales and options
+       // Refer https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String/localeCompare 
+       ascendingByLocale("name", 'de', { sensitivity: 'base' })
+   );
+
+   // returns [f1, f5, f3, f2, f4]
+   fs.sort(friendSorter);
    ```
 1. take
    ```JavaScript

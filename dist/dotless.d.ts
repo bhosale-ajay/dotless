@@ -20,6 +20,11 @@ export declare function query<T1, T2, T3, T4, T5, T6, T7, T8>(a: T1, b: (arg: T1
 export declare function query<T1, T2, T3, T4, T5, T6, T7, T8, T9>(a: T1, b: (arg: T1) => T2, c: (arg: T2) => T3, d: (arg: T3) => T4, e: (arg: T4) => T5, f: (arg: T5) => T6, g: (arg: T6) => T7, h: (arg: T7) => T8, i: (arg: T8) => T9): T9;
 export declare function query<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10>(a: T1, b: (arg: T1) => T2, c: (arg: T2) => T3, d: (arg: T3) => T4, e: (arg: T4) => T5, f: (arg: T5) => T6, g: (arg: T6) => T7, h: (arg: T7) => T8, i: (arg: T8) => T9, j: (arg: T9) => T10): T10;
 export declare function ascendingBy<T>(property?: keyof T | ((obj: T) => any)): (a: T, b: T) => 1 | 0 | -1;
+export declare type StringPropertyOf<T> = {
+    [K in keyof T]-?: T[K] extends string ? K : never;
+}[keyof T];
+export declare function ascendingByLocale<T>(property: StringPropertyOf<T>, locales?: string | string[] | undefined, options?: Intl.CollatorOptions | undefined): (a: T, b: T) => 0 | 1 | -1;
+export declare function descendingByLocale<T>(property: StringPropertyOf<T>, locales?: string | string[] | undefined, options?: Intl.CollatorOptions | undefined): (a: T, b: T) => 0 | 1 | -1;
 export declare function descendingBy<T>(property?: keyof T | ((obj: T) => any)): (a: T, b: T) => 1 | 0 | -1;
 declare type Compare<T> = (a: T, b: T) => -1 | 0 | 1;
 export declare function mergeCompareFns<T>(...compareFns: Array<Compare<T>>): Compare<T>;
@@ -28,6 +33,7 @@ export declare function sort<T1, T2 = T1>(a: Compare<T1>, b: Compare<T2>): <U ex
 export declare function sort<T1, T2 = T1, T3 = T1>(a: Compare<T1>, b: Compare<T2>, c: Compare<T3>): <U extends T1 & T2 & T3>(array: U[]) => U[];
 export declare function sort<T1, T2 = T1, T3 = T1, T4 = T1>(a: Compare<T1>, b: Compare<T2>, c: Compare<T3>, d: Compare<T4>): <U extends T1 & T2 & T3 & T4>(array: U[]) => U[];
 export declare function sort<T1, T2 = T1, T3 = T1, T4 = T1, T5 = T1>(a: Compare<T1>, b: Compare<T2>, c: Compare<T3>, d: Compare<T4>, e: Compare<T5>): <U extends T1 & T2 & T3 & T4 & T5>(array: U[]) => U[];
+export declare function sort<T1, T2 = T1, T3 = T1, T4 = T1, T5 = T1, T6 = T1>(a: Compare<T1>, b: Compare<T2>, c: Compare<T3>, d: Compare<T4>, e: Compare<T5>, f: Compare<T6>): <U extends T1 & T2 & T3 & T4 & T5 & T6>(array: U[]) => U[];
 export declare function matchesToArray<T = RegExpExecArray>(str: string, regex: RegExp, convertor?: (x: RegExpExecArray) => T): T[];
 interface Dictionary<T> {
     [key: string]: T;

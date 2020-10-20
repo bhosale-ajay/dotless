@@ -1,6 +1,8 @@
 import {
     ascendingBy,
+    ascendingByLocale,
     descendingBy,
+    descendingByLocale,
     sort,
     query,
     filter,
@@ -100,6 +102,12 @@ interface Company {
     founders: string;
 }
 
+interface Friend {
+    name: string;
+    surname: string;
+    online: boolean;
+}
+
 test("sort 03 : Can use same sorter for different types.", () => {
     const entitySorter = sort(descendingBy("founded"), ascendingBy("name"));
     const city1 = { name: "New York", founded: 1624, state: "NY" };
@@ -170,4 +178,94 @@ test("sort 05", () => {
         )
         .map(c => c.name);
     expect(actual).toEqual([city3.name, city4.name, city2.name, city5.name]);
+});
+
+test("sort 06", () => {
+    const city1 = { name: "New York", founded: 1624, state: "NY" };
+    const city2 = { name: "Seattle", founded: 1833, state: "WA" };
+    const city3 = { name: "Chicago", founded: 1833, state: "IL" };
+    const city4 = { name: "IL City", founded: 1833, state: "IL" };
+    const city5 = { name: "AZ City", founded: 1843, state: "AZ" };
+    const cities: City[] = [city1, city2, city3, city4, city5];
+    const actual = cities
+        .sort(
+            mergeCompareFns(
+                ascendingByLocale("state"),
+                ascendingByLocale("name")
+            )
+        )
+        .map(c => c.name);
+    expect(actual).toEqual([
+        city5.name,
+        city3.name,
+        city4.name,
+        city1.name,
+        city2.name
+    ]);
+});
+
+test("sort 07", () => {
+    const f1 = { name: "AB", online: true, surname: "G" };
+    const f2 = { name: "CD", online: false, surname: "G" };
+    const f3 = { name: "EF", online: true, surname: "K" };
+    const f4 = { name: "GH", online: false, surname: "K" };
+    const f5 = { name: "IJ", online: true, surname: "G" };
+    const fs = [f1, f2, f3, f4, f5];
+
+    const onlineSorter = (a: Friend, b: Friend) =>
+        a.online === b.online ? 0 : a.online ? -1 : 1;
+    const friendSorter = mergeCompareFns(
+        onlineSorter,
+        // Only properties of String type can be passed here
+        ascendingByLocale("surname"),
+        // You can also pass, two more parameters
+        // locales and options
+        // Refer https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String/localeCompare
+        ascendingByLocale("name", "de", { sensitivity: "base" })
+    );
+
+    const actual = fs.sort(friendSorter);
+    expect(actual).toEqual([f1, f5, f3, f2, f4]);
+});
+
+test("sort 07", () => {
+    const f1 = { name: "AB", online: true, surname: "G" };
+    const f2 = { name: "CD", online: false, surname: "G" };
+    const f3 = { name: "EF", online: true, surname: "K" };
+    const f4 = { name: "GH", online: false, surname: "K" };
+    const f5 = { name: "IJ", online: true, surname: "G" };
+    const fs = [f1, f2, f3, f4, f5];
+
+    const friendSorter = mergeCompareFns<Friend>(
+        descendingByLocale("surname"),
+        descendingByLocale("name")
+    );
+
+    const actual = fs.sort(friendSorter);
+    expect(actual).toEqual([f4, f3, f5, f2, f1]);
+});
+
+test("sort 08 : Locale Parameter tests", () => {
+    expect(ascendingByLocale("n")({ n: "2" }, { n: "10" })).toEqual(1);
+    expect(
+        ascendingByLocale("n", undefined, { numeric: true })(
+            { n: "2" },
+            { n: "10" }
+        )
+    ).toEqual(-1);
+    expect(
+        ascendingByLocale("n", "en-u-kn-true")({ n: "2" }, { n: "10" })
+    ).toEqual(-1);
+
+    expect(
+        descendingByLocale("n", "de", { sensitivity: "base" })(
+            { n: "ä" },
+            { n: "a" }
+        )
+    ).toEqual(-0);
+    expect(descendingByLocale("n")({ n: "ä" }, { n: "a" })).toEqual(-1);
+    expect(ascendingByLocale("n")({ n: "ä" }, { n: "a" })).toEqual(1);
+    expect(
+        descendingByLocale("n", "en-u-kn-true")({ n: "2" }, { n: "10" })
+    ).toEqual(1);
 });

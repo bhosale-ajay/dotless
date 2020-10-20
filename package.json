@@ -1,6 +1,6 @@
 {
   "name": "dotless",
-  "version": "1.1.0",
+  "version": "1.2.0",
   "description": "dotless : Linq in JavaScript, and Railways Programming",
   "engines": {
     "node": "*"
@@ -11,12 +11,13 @@
     "url": "https://github.com/bhosale-ajay/dotless.git"
   },
   "scripts": {
-    "build": "webpack",
+    "pc": "prettier --write **/**.ts",
     "lint": "eslint */*.ts",
     "test": "jest tests --detectOpenHandles",
-    "samples": "jest samples --detectOpenHandles",
     "cc": "jest tests --detectOpenHandles --coverage",
-    "pc": "prettier --write **/**.ts"
+    "build": "webpack",
+    "samples": "jest samples --detectOpenHandles",
+    "all" : "yarn pc && yarn lint && yarn test && yarn cc && yarn build && yarn samples"
   },
   "author": "Ajay Bhosale",
   "main": "./dist/dotless",

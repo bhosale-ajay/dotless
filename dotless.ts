@@ -228,6 +228,36 @@ export function ascendingBy<T>(property: keyof T | ((obj: T) => any) = _ => _) {
     };
 }
 
+export type StringPropertyOf<T> = {
+    [K in keyof T]-?: T[K] extends string ? K : never;
+}[keyof T];
+export function ascendingByLocale<T>(
+    property: StringPropertyOf<T>,
+    locales?: string | string[] | undefined,
+    options?: Intl.CollatorOptions | undefined
+) {
+    return (a: T, b: T) => {
+        const aValue = (a[property] as any) as string;
+        const bValue = (b[property] as any) as string;
+        return aValue.localeCompare(bValue, locales, options) as -1 | 0 | 1;
+    };
+}
+
+export function descendingByLocale<T>(
+    property: StringPropertyOf<T>,
+    locales?: string | string[] | undefined,
+    options?: Intl.CollatorOptions | undefined
+) {
+    return (a: T, b: T) => {
+        const aValue = (a[property] as any) as string;
+        const bValue = (b[property] as any) as string;
+        return (aValue.localeCompare(bValue, locales, options) * -1) as
+            | -1
+            | 0
+            | 1;
+    };
+}
+
 export function descendingBy<T>(
     property: keyof T | ((obj: T) => any) = _ => _
 ) {
@@ -282,6 +312,14 @@ export function sort<T1, T2 = T1, T3 = T1, T4 = T1, T5 = T1>(
     d: Compare<T4>,
     e: Compare<T5>
 ): <U extends T1 & T2 & T3 & T4 & T5>(array: U[]) => U[];
+export function sort<T1, T2 = T1, T3 = T1, T4 = T1, T5 = T1, T6 = T1>(
+    a: Compare<T1>,
+    b: Compare<T2>,
+    c: Compare<T3>,
+    d: Compare<T4>,
+    e: Compare<T5>,
+    f: Compare<T6>
+): <U extends T1 & T2 & T3 & T4 & T5 & T6>(array: U[]) => U[];
 export function sort<T>(...compareFns: Array<Compare<T>>) {
     return <U extends T>(array: U[]) =>
         array.sort(mergeCompareFns(...compareFns));
